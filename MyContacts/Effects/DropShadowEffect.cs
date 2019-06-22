@@ -43,9 +43,21 @@ namespace MyContacts.Effects
                 return;
             }
 
-            if (!view.Effects.Any(item => item is ListViewSortableEffect))
+	    //bnSonic - remove effect if we set sortable to false
+            if ((newValue as bool?).GetValueOrDefault(false) == true)
             {
-                view.Effects.Add(new ListViewSortableEffect());
+                if (!view.Effects.Any(item => item is ListViewSortableEffect))
+                {
+                    view.Effects.Add(new ListViewSortableEffect());
+                }
+            }
+            else
+            {
+                var effect = view.Effects.First(item => item is ListViewSortableEffect);
+                if (effect != null)
+                {
+                    view.Effects.Remove(effect);
+                }
             }
         }
 
