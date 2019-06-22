@@ -147,10 +147,11 @@ namespace MyContacts.iOS
             return OriginalSource.GetHeightForHeader(tableView, section);
         }
 
-        public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
-        {
-            return OriginalSource.GetHeightForRow(tableView, indexPath);
-        }
+	//bnSonic - commented out because of exception foundation:you_shoud_not_call_base_...
+        //public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
+        //{
+        //    return OriginalSource.GetHeightForRow(tableView, indexPath);
+        //}
 
         public override UIView GetViewForHeader(UITableView tableView, nint section)
         {
