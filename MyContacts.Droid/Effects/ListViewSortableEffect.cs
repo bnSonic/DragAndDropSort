@@ -21,13 +21,18 @@ namespace MyContacts.Droid.Effects
     public class ListViewSortableEffect : PlatformEffect
     {
         private DragListAdapter _dragListAdapter = null;
-
+        
+        // we need to reset any longClickListener if we set the ListView to IsSortable = false;
+        private AWidget.AdapterView.IOnItemLongClickListener _longClickListenerOrig = null;
+        
         protected override void OnAttached()
         {
             var element = Element as ListView;
 
             if(Control is AWidget.ListView listView)
             {
+                _longClickListenerOrig = listView.OnItemLongClickListener; //for later use to restore listener in OnDetached()
+                
                 _dragListAdapter = new DragListAdapter(listView, element);
                 listView.Adapter = _dragListAdapter;
                 listView.SetOnDragListener(_dragListAdapter);
@@ -41,7 +46,9 @@ namespace MyContacts.Droid.Effects
             {
                 listView.Adapter = _dragListAdapter.WrappedAdapter;
 
-                // TODO: Remove the attached listeners
+                // Remove the attached listeners
+                listView.SetOnDragListener(null); //<- not sure; i would rather reset any DragListener that was there before set it in OnAttached() but i don't know how to get it
+                listView.OnItemLongClickListener = _longClickListenerOrig; //reset old longClickListener, so that menuItems for list-entries are working again
             }
         }
 
