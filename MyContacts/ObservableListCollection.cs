@@ -117,27 +117,33 @@ namespace MyContacts
 
         public void ChangeOrdinal(int oldIndex, int newIndex)
         {
-            var priorIndex = oldIndex;
-            var latterIndex = newIndex;
+            //var priorIndex = oldIndex;
+            //var latterIndex = newIndex;
 
-            var changedItem = Items[oldIndex];
-            if (newIndex < oldIndex)
-            {
-                // add one to where we delete, because we're increasing the index by inserting
-                priorIndex += 1;
-            }
-            else
-            {
-                // add one to where we insert, because we haven't deleted the original yet
-                latterIndex += 1;
-            }
+            //var changedItem = Items[oldIndex];
+            //if (newIndex < oldIndex)
+            //{
+            //    // add one to where we delete, because we're increasing the index by inserting
+            //    priorIndex += 1;
+            //}
+            //else
+            //{
+            //    // add one to where we insert, because we haven't deleted the original yet
+            //    latterIndex += 1;
+            //}
 
-            Items.Insert(latterIndex, changedItem);
-            Items.RemoveAt(priorIndex);
+            //Items.Insert(latterIndex, changedItem);
+            //Items.RemoveAt(priorIndex);
+
+            // using MoveItem is simpler and it automatically updates the UI, Call of OnCollectionChanged not neccessary 
+            if (oldIndex == newIndex)
+                return;
+            this.MoveItem(oldIndex, newIndex);
 
             OrderChanged?.Invoke(this, EventArgs.Empty);
 
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, changedItem, newIndex, oldIndex));
+            // this call is not needed if you use MoveItem (see above)
+            //OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, changedItem, newIndex, oldIndex));
         }
 
         /// <summary>
